@@ -62,12 +62,14 @@
             margin: 0 0 10px;
             font-size: 28px;
             letter-spacing: 0.2px;
+            text-align: center;
         }
 
         .subtitle {
             margin: 0 0 18px;
             opacity: 0.95;
             line-height: 1.45;
+            text-align: center;
         }
 
         .imgWrap {
@@ -105,6 +107,7 @@
             margin: 0 0 14px;
             line-height: 1.4;
             text-align: center; /* вот это главное */
+            font-weight: bold;
         }
 
 
@@ -113,6 +116,7 @@
             gap: 12px;
             flex-wrap: wrap;
             margin-top: 14px;
+            justify-content: center;
         }
 
         button {
@@ -166,12 +170,14 @@
     <div class="app">
         <!-- Экран приветствия -->
         <div id="screenStart" class="card">
-            <h1 class="title">Привет!</h1>
+            <h1 class="title">Пятница 13 позади:)</h1>
             <p class="subtitle">
-                Сейчас будет небольшое тестирование. Отвечай честно: «да» или «нет».
+                Я узнал 50 фактов о Депрессивно-нарциссическом типе личности.
+            <br>
+                Отвечай честно: «правда» или «ложь».
             </p>
             <div class="row">
-                <button class="btnPrimary" id="btnStart">Начать тестирование!</button>
+                <button class="btnPrimary" id="btnStart">сер да сер!</button>
             </div>
             <div class="meta">Нажми кнопку, чтобы начать.</div>
         </div>
@@ -187,15 +193,19 @@
             <p class="questionText" id="qText">Тут будет вопрос</p>
 
             <div class="row">
-                <button class="btnYes" id="btnYes">Да</button>
-                <button class="btnNo" id="btnNo">Нет</button>
+                <button class="btnYes" id="btnYes">ПРАВДА</button>
+                <button class="btnNo" id="btnNo">ЛОЖЬ</button>
             </div>
         </div>
 
         <!-- Экран результата -->
         <div id="screenResult" class="card hidden">
-            <h2 class="title">Готово!</h2>
-            <p class="subtitle" id="resultText">Поздравляю, вы ответили правильно на 0%</p>
+            <h2 class="title">
+                Спасибо, что ты такая, какая есть!💙
+            <br>
+                С днём всех влюблённых!
+            </h2>
+            <p class="subtitle" id="resultText">Я угадал 0% твоих ответов)</p>
 
             <div class="row">
                 <button class="btnPrimary" id="btnRestart">Повторить</button>
@@ -252,9 +262,21 @@
             { image: "img/36.png", text: "#36 умеешь играть в шахматы" },
             { image: "img/37.png", text: "#37 умеешь рисовать" },
             { image: "img/38.png", text: "#38 умеешь слушать" },
-            { image: "img/39.png", text: "#39 умеешь готовить чай с апельсином" }
+            { image: "img/39.png", text: "#39 умеешь готовить чай с апельсином" },
 
-            //{ image: "img/.png", text: "#" }
+            { image: "img/40.png", text: "#40 умеешь быть самостоятельной" },
+            { image: "img/41.png", text: "#41 умеешь отстаивать свои интересы" },
+            { image: "img/42.png", text: "#42 умеешь радоваться мелочам" },
+            { image: "img/43.png", text: "#43 умеешь всегда выглядеть очаровательно" },
+
+            { image: "img/44.png", text: "#44 умеешь быть строгой" },
+            { image: "img/45.png", text: "#45 умеешь быть нежной" },
+            { image: "img/46.png", text: "#46 умеешь делать сальто через руль" },
+            { image: "img/47.png", text: "#47 умеешь быть авантюристкой" },
+
+            { image: "img/48.png", text: "#48 любишь рисковать" },
+            { image: "img/49.png", text: "#49 умеешь всегда ослепительно улыбаться" },
+            { image: "img/50.png", text: "#50 умеешь смеяться над собой" }
 
 
         ];
@@ -324,7 +346,7 @@
             const total = deck.length;
             const q = deck[index];
 
-            progressText.textContent = `Вопрос ${index + 1} из ${total}`;
+            progressText.textContent = `Факт ${index + 1} из ${total}`;
             qText.textContent = q.text;
 
             // картинка
@@ -352,8 +374,8 @@
             const total = deck.length;
             const percent = total === 0 ? 0 : Math.round((yesCount / total) * 100);
 
-            resultText.textContent = `Поздравляю, вы ответили правильно на ${percent}%`;
-            detailText.textContent = `Ответов "да": ${yesCount} из ${total}.`;
+            resultText.textContent = `я угадал ${percent}% твоих ответов :)`;
+            detailText.textContent = `Ответов "правда": ${yesCount} из ${total}.`;
 
             goResult();
         }
