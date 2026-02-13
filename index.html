@@ -1,63 +1,326 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Для тебя ❤️</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Тестирование</title>
 
     <style>
+        :root {
+            --bg1: #ff758c;
+            --bg2: #ff7eb3;
+            --glass: rgba(255,255,255,0.18);
+            --glass2: rgba(255,255,255,0.26);
+            --text: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.18);
+            --radius: 22px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
             font-family: Arial, sans-serif;
-            color: white;
-            text-align: center;
+            color: var(--text);
+            padding: 24px;
+        }
+
+        .app {
+            width: min(820px, 100%);
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 40px;
-            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 28px;
             backdrop-filter: blur(10px);
-            animation: fadeIn 2s ease;
+            animation: pop 220ms ease-out;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        @keyframes fadeIn {
+        @keyframes pop {
             from {
+                transform: scale(0.98);
                 opacity: 0;
-                transform: scale(0.8);
             }
 
             to {
-                opacity: 1;
                 transform: scale(1);
+                opacity: 1;
             }
+        }
+
+        .title {
+            margin: 0 0 10px;
+            font-size: 28px;
+            letter-spacing: 0.2px;
+        }
+
+        .subtitle {
+            margin: 0 0 18px;
+            opacity: 0.95;
+            line-height: 1.45;
+        }
+
+        .imgWrap {
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            margin: 14px 0 16px;
+        }
+
+            .imgWrap img {
+                width: 100%;
+                height: 640px;
+                object-fit: cover;
+                display: block;
+            }
+
+        @media (max-width: 520px) {
+            .imgWrap img {
+                height: 220px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+        }
+
+        .questionText {
+            font-size: 20px;
+            margin: 0 0 14px;
+            line-height: 1.4;
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        button {
+            appearance: none;
+            border: 0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.92);
+            color: #222;
+            transition: transform 0.08s ease, filter 0.12s ease, background 0.12s ease;
+            min-width: 160px;
+        }
+
+            button:hover {
+                filter: brightness(0.98);
+            }
+
+            button:active {
+                transform: translateY(1px) scale(0.99);
+            }
+
+        .btnPrimary {
+            background: rgba(255,255,255,0.95);
+        }
+
+        .btnYes {
+            background: rgba(255,255,255,0.95);
+        }
+
+        .btnNo {
+            background: var(--glass2);
+            color: var(--text);
+            border: 1px solid rgba(255,255,255,0.26);
+        }
+
+        .meta {
+            margin-top: 14px;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 
 <body>
-    <div class="card">
-        <h1>Сюрприз 🎁</h1>
-        <p>Я сделал этот сайт специально для тебя 💖</p>
-        <button onclick="showMessage()">Нажми сюда</button>
+    <div class="app">
+        <!-- Экран приветствия -->
+        <div id="screenStart" class="card">
+            <h1 class="title">Привет!</h1>
+            <p class="subtitle">
+                Сейчас будет небольшое тестирование. Отвечай честно: «да» или «нет».
+            </p>
+            <div class="row">
+                <button class="btnPrimary" id="btnStart">Начать тестирование!</button>
+            </div>
+            <div class="meta">Нажми кнопку, чтобы начать.</div>
+        </div>
+
+        <!-- Экран вопросов -->
+        <div id="screenQuiz" class="card hidden">
+            <div class="meta" id="progressText">Вопрос 1 из 1</div>
+
+            <div class="imgWrap">
+                <img id="qImage" alt="Изображение вопроса" />
+            </div>
+
+            <p class="questionText" id="qText">Тут будет вопрос</p>
+
+            <div class="row">
+                <button class="btnYes" id="btnYes">Да</button>
+                <button class="btnNo" id="btnNo">Нет</button>
+            </div>
+        </div>
+
+        <!-- Экран результата -->
+        <div id="screenResult" class="card hidden">
+            <h2 class="title">Готово!</h2>
+            <p class="subtitle" id="resultText">Поздравляю, вы ответили правильно на 0%</p>
+
+            <div class="row">
+                <button class="btnPrimary" id="btnRestart">Повторить</button>
+            </div>
+
+            <div class="meta" id="detailText"></div>
+        </div>
     </div>
 
     <script>
-        function showMessage() {
-            alert("Ты самый важный человек в моей жизни ❤️");
+        // 1) ТУТ ТВОИ ВОПРОСЫ
+        // image: путь к файлу картинки (лучше хранить в папке images)
+        const QUESTIONS = [
+            { image: "img/1.png", text: "#1 Ты любишь синий цвет?" },
+            { image: "img/2.png", text: "#2 Ты любишь шоколад Ritter Sport" },
+            { image: "img/3.png", text: "#3 Ты любишь Порш Каен" }
+        ];
+
+        // --------- Логика квиза ---------
+        const screenStart = document.getElementById("screenStart");
+        const screenQuiz = document.getElementById("screenQuiz");
+        const screenResult = document.getElementById("screenResult");
+
+        const btnStart = document.getElementById("btnStart");
+        const btnYes = document.getElementById("btnYes");
+        const btnNo = document.getElementById("btnNo");
+        const btnRestart = document.getElementById("btnRestart");
+
+        const qImage = document.getElementById("qImage");
+        const qText = document.getElementById("qText");
+        const progressText = document.getElementById("progressText");
+
+        const resultText = document.getElementById("resultText");
+        const detailText = document.getElementById("detailText");
+
+        let deck = [];        // перемешанные вопросы
+        let index = 0;        // текущий индекс вопроса
+        let yesCount = 0;     // сколько "да"
+
+        function shuffle(array) {
+            // Фишер–Йетс
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function show(el) { el.classList.remove("hidden"); }
+        function hide(el) { el.classList.add("hidden"); }
+
+        function goStart() {
+            hide(screenQuiz);
+            hide(screenResult);
+            show(screenStart);
+        }
+
+        function goQuiz() {
+            hide(screenStart);
+            hide(screenResult);
+            show(screenQuiz);
+        }
+
+        function goResult() {
+            hide(screenStart);
+            hide(screenQuiz);
+            show(screenResult);
+        }
+
+        function startQuiz() {
+            // создаём “колоду” и мешаем
+            deck = shuffle([...QUESTIONS]);
+            index = 0;
+            yesCount = 0;
+
+            goQuiz();
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const total = deck.length;
+            const q = deck[index];
+
+            progressText.textContent = `Вопрос ${index + 1} из ${total}`;
+            qText.textContent = q.text;
+
+            // картинка
+            qImage.src = q.image;
+
+            // если путь к картинке неверный — покажем понятное сообщение в консоли
+            qImage.onerror = () => {
+                console.warn("Не удалось загрузить картинку:", q.image);
+            };
+        }
+
+        function answer(isYes) {
+            if (isYes) yesCount++;
+
+            index++;
+
+            if (index >= deck.length) {
+                finishQuiz();
+            } else {
+                renderQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            const total = deck.length;
+            const percent = total === 0 ? 0 : Math.round((yesCount / total) * 100);
+
+            resultText.textContent = `Поздравляю, вы ответили правильно на ${percent}%`;
+            detailText.textContent = `Ответов "да": ${yesCount} из ${total}.`;
+
+            goResult();
+        }
+
+        // Кнопки
+        btnStart.addEventListener("click", startQuiz);
+        btnYes.addEventListener("click", () => answer(true));
+        btnNo.addEventListener("click", () => answer(false));
+        btnRestart.addEventListener("click", startQuiz);
+
+        // На всякий случай — если список вопросов пуст
+        if (QUESTIONS.length === 0) {
+            console.warn("QUESTIONS пустой. Добавь вопросы в массив QUESTIONS.");
         }
     </script>
 </body>
